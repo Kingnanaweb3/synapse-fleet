@@ -1,0 +1,28 @@
+DATA RETENTION POLICY
+Acme Financial Services Ltd
+Last Updated: January 2026
+
+1. PURPOSE
+This policy defines how Acme Financial Services retains, archives, and destroys personal data
+in compliance with applicable regulations including GDPR and DORA.
+
+2. RETENTION PERIODS
+- Customer personal data: 7 years after relationship ends
+- Transaction records: 10 years (regulatory requirement)
+- Employee records: Duration of employment + 7 years
+- Marketing consent records: 3 years or until withdrawn
+- Incident logs: 5 years
+- ICT system logs: 18 months minimum
+
+3. DATA DESTRUCTION
+Personal data is securely destroyed using DoD 5220.22-M standard for digital media.
+Physical documents are shredded by certified vendor. Certificates of destruction are retained.
+
+4. INTERNATIONAL TRANSFERS
+Data is processed only within EU/EEA unless Standard Contractual Clauses are in place.
+Current cross-border transfers: None.
+
+5. ACCOUNTABILITY
+Data Protection Officer: Jane Smith (dpo@acme-financial.com)
+Review cycle: Annual
+Next review: January 2027

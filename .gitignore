@@ -1,0 +1,15 @@
+.env
+.env.*
+agent_config.yaml
+.venv/
+__pycache__/
+*.pyc
+node_modules/
+dist/
+landing/dist/
+ui/dist/
+ui_events.json
+run.log
+*.bak
+patch_*.py
+.DS_Store

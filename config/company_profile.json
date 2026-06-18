@@ -1,0 +1,33 @@
+{
+  "company_name": "Acme Financial Services Ltd",
+  "industry": "Financial Services",
+  "annual_revenue_eur": 1065000000,
+  "employees": 3200,
+  "eu_revenue_pct": 0.65,
+  "jurisdictions": [
+    "Ireland",
+    "Germany",
+    "France",
+    "Netherlands"
+  ],
+  "publicly_listed": false,
+  "regulated_by": [
+    "Central Bank of Ireland",
+    "BaFin"
+  ],
+  "tech_stack": [
+    "AWS",
+    "Salesforce",
+    "SAP",
+    "Oracle DB"
+  ],
+  "ai_systems_deployed": [
+    "Customer credit scoring",
+    "Fraud detection",
+    "Chatbot support"
+  ],
+  "data_subjects_count": 1200000,
+  "has_dpo": true,
+  "last_audit_date": "2025-03-15",
+  "notes": "Mid-size EU financial firm with cross-border operations"
+}
