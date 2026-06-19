@@ -1,5 +1,8 @@
 # 🛰️ Synapse Fleet
 
+> **▶️ Live pitch & walkthrough:** https://five-ai-agents-one-compl-9f6zm06.gamma.site/
+
+
 **Autonomous compliance intelligence — from regulation drop to board decision in minutes.**
 
 Synapse Fleet is a team of five AI agents that read a new regulation, scan your company against it, put a number on the risk, draft a fix-it plan, and hand your board a ready-to-sign memo — coordinating with each other the whole way, with a human approving before anything ships.
