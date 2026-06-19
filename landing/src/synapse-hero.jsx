@@ -3,6 +3,7 @@ import { Sparkles, Menu, X, Play, ShieldCheck, Network, Brain, Target, ShieldAle
 
 const BG_IMAGE = "/hero-bg.png";
 const DASHBOARD = "/dashboard.webp";
+const DASHBOARD_URL = "https://web-production-85997.up.railway.app/";
 const FONT = "'DM Sans', ui-sans-serif, system-ui, sans-serif";
 
 const c = {
@@ -22,8 +23,8 @@ const navLinks = [
 
 const stack = [
   { label: "Powered by", name: "Band", icon: <ShieldCheck size={16} color={c.orange} /> },
-  { label: "Routed via", name: "OpenRouter", icon: <Network size={16} color={c.muted} /> },
-  { label: "Reasoning by", name: "Claude", icon: <Brain size={16} color={c.muted} /> },
+  { label: "Inference on", name: "Groq", icon: <Network size={16} color={c.muted} /> },
+  { label: "Models", name: "Llama 3.3 + GPT-OSS", icon: <Brain size={16} color={c.muted} /> },
 ];
 
 const features = [
@@ -34,12 +35,7 @@ const features = [
 
 function LogoMark({ size = 28 }) {
   return (
-    <div className="grid grid-cols-2 gap-0.5" style={{ width: size, height: size }}>
-      <span className="rounded-sm" style={{ background: c.text }} />
-      <span className="rounded-sm" style={{ background: c.orange }} />
-      <span className="rounded-sm" style={{ background: c.orange }} />
-      <span className="rounded-sm" style={{ background: c.text }} />
-    </div>
+    <img src="/logo.png" alt="Synapse Fleet" style={{ height: size, width: "auto" }} />
   );
 }
 
@@ -151,7 +147,7 @@ export default function Hero() {
                    style={{ background: c.orange, color: "#fff" }}>
                   <Sparkles size={16} /> Run a Regulation
                 </a>
-                <a href="#how-it-works" className="btn-ghost flex items-center justify-center gap-2 rounded-xl px-6 py-3.5 text-sm font-semibold"
+                <a href={DASHBOARD_URL} target="_blank" rel="noreferrer" className="btn-ghost flex items-center justify-center gap-2 rounded-xl px-6 py-3.5 text-sm font-semibold"
                    style={{ background: "transparent", color: c.text, border: `1px solid ${c.border}` }}>
                   <Play size={15} /> See Agent Workflow
                 </a>

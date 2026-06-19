@@ -6,17 +6,12 @@ const c = {
   text: "#F5F5F4", muted: "#9A9DA4", dim: "#6B6E76", orange: "#F5521C",
 };
 
-const GITHUB = "https://github.com/Kingnanaweb3/synpase-fleet";
+const GITHUB = "https://github.com/Kingnanaweb3/synapse-fleet";
 const TWITTER = "https://x.com/almond_env";
 
 function LogoMark({ size = 26 }) {
   return (
-    <div className="grid grid-cols-2 gap-0.5" style={{ width: size, height: size }}>
-      <span className="rounded-sm" style={{ background: c.text }} />
-      <span className="rounded-sm" style={{ background: c.orange }} />
-      <span className="rounded-sm" style={{ background: c.orange }} />
-      <span className="rounded-sm" style={{ background: c.text }} />
-    </div>
+    <img src="/logo.png" alt="Synapse Fleet" style={{ height: size, width: "auto" }} />
   );
 }
 
