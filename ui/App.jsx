@@ -257,6 +257,9 @@ export default function App() {
                 <option value="GDPR">GDPR</option>
                 <option value="EU_AI_ACT">EU AI Act</option>
                 <option value="DORA">DORA</option>
+                <option value="MICA">MiCA</option>
+                <option value="NIS2">NIS2</option>
+                <option value="AML">AML</option>
               </select>
               <button onClick={handleStart} disabled={cooldown} style={{ padding: "10px 20px", background: cooldown ? "#7a2a10" : "#FF4500", color: "#fff", border: "none", borderRadius: 8, fontSize: 14, fontWeight: 600, cursor: cooldown ? "default" : "pointer", opacity: cooldown ? 0.7 : 1 }}>
                 {cooldown ? "Running…" : "Run Analysis"}

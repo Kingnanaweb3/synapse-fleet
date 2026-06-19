@@ -162,3 +162,73 @@ def fetch_regulation(regulation_key: str) -> dict | None:
 
 def list_available_regulations() -> list:
     return [{"key": k, "name": v["name"], "celex": v["celex"]} for k, v in REGULATIONS.items()]
+
+
+# --- Additional regulations: MiCA, NIS2, AML ---
+REGULATIONS["MICA"] = {
+    "regulation_key": "MICA",
+    "celex": "32023R1114",
+    "name": "Markets in Crypto-Assets Regulation",
+    "max_penalty_eur": 5000000,
+    "max_penalty_pct": 3.0,
+    "source_url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32023R1114",
+    "raw_text": """REGULATION (EU) 2023/1114 OF THE EUROPEAN PARLIAMENT AND OF THE COUNCIL of 31 May 2023 on markets in crypto-assets (MiCA).
+
+KEY OBLIGATIONS:
+Title II - Crypto-asset white papers: Offerors and persons seeking admission to trading must publish a fair, clear and non-misleading white paper, notified to the competent authority before publication.
+Title III/IV - Asset-referenced tokens (ARTs) and e-money tokens (EMTs): Issuers must be authorised, maintain adequate reserves of assets, and meet own-funds and redemption-at-par requirements.
+Title V - Crypto-Asset Service Providers (CASPs): Must be authorised, meet prudential safeguards, segregate and safeguard client crypto-assets and funds, and maintain governance, conflict-of-interest and complaint-handling procedures.
+Title VI - Market abuse: Prohibits insider dealing, unlawful disclosure of inside information, and market manipulation in crypto-assets.
+
+PENALTIES (legal persons): For general infringements, administrative fines up to the higher of EUR 5,000,000 or 3% of total annual turnover. For market-abuse breaches, up to the higher of EUR 15,000,000 or 15% of total annual turnover.
+
+AFFECTED DOMAINS: Crypto-Asset Services, Custody and Safeguarding, Treasury, Compliance, Market Surveillance, Consumer Protection, Legal, Finance.
+
+COMPLIANCE DEADLINE: Applies from 30 December 2024 (CASP provisions); national transitional arrangements end 1 July 2026.
+"""
+}
+REGULATIONS["NIS2"] = {
+    "regulation_key": "NIS2",
+    "celex": "32022L2555",
+    "name": "Network and Information Security Directive 2 (NIS2)",
+    "max_penalty_eur": 10000000,
+    "max_penalty_pct": 2.0,
+    "source_url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32022L2555",
+    "raw_text": """DIRECTIVE (EU) 2022/2555 OF THE EUROPEAN PARLIAMENT AND OF THE COUNCIL of 14 December 2022 on measures for a high common level of cybersecurity across the Union (NIS2 Directive).
+
+KEY OBLIGATIONS:
+Article 20 - Governance: Management bodies must approve and oversee cybersecurity risk-management measures and can be held personally liable for non-compliance.
+Article 21 - Risk-management measures: Implement appropriate technical, operational and organisational measures, including risk analysis, incident handling, business continuity and backups, supply-chain security, vulnerability handling, encryption, and access control.
+Article 23 - Incident reporting: Submit an early warning to the CSIRT or competent authority within 24 hours of a significant incident, a full notification within 72 hours, and a final report within one month.
+Article 24-25 - Use of EU certification schemes and standardised security approaches.
+
+PENALTIES: Essential entities face administrative fines up to the higher of EUR 10,000,000 or 2% of total worldwide annual turnover. Important entities up to the higher of EUR 7,000,000 or 1.4%.
+
+AFFECTED DOMAINS: Information Security, IT Operations, Incident Response, Business Continuity, Supply-Chain and Vendor Management, Governance, Risk, Compliance.
+
+COMPLIANCE DEADLINE: Member State transposition deadline was 17 October 2024; measures apply from 18 October 2024.
+"""
+}
+REGULATIONS["AML"] = {
+    "regulation_key": "AML",
+    "celex": "32024R1624",
+    "name": "Anti-Money Laundering Regulation (AMLR)",
+    "max_penalty_eur": 5000000,
+    "max_penalty_pct": 10.0,
+    "source_url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32024R1624",
+    "raw_text": """REGULATION (EU) 2024/1624 OF THE EUROPEAN PARLIAMENT AND OF THE COUNCIL of 31 May 2024 on the prevention of the use of the financial system for money laundering or terrorist financing (Anti-Money Laundering Regulation, AMLR), part of the EU AML package alongside Directive (EU) 2024/1640 (AMLD6).
+
+KEY OBLIGATIONS:
+Customer due diligence (CDD): Identify and verify customers and their beneficial owners, and conduct ongoing monitoring of the business relationship.
+Enhanced due diligence: Apply stronger measures in higher-risk situations, including certain third countries and politically exposed persons.
+Beneficial ownership: Determine and keep up to date the ultimate beneficial owners and report to central registers.
+Suspicious activity: Detect and report suspicious transactions to the Financial Intelligence Unit and retain records.
+Internal controls: Maintain AML/CFT policies, a compliance function, and staff training. Cash payments above EUR 10,000 are prohibited.
+
+PENALTIES: For serious, repeated or systematic breaches by legal persons, maximum administrative pecuniary sanctions up to the higher of EUR 5,000,000 or 10% of total annual turnover.
+
+AFFECTED DOMAINS: KYC and Onboarding, Transaction Monitoring, Financial Crime Compliance, Beneficial Ownership, Regulatory Reporting, Audit, Legal, Risk.
+
+COMPLIANCE DEADLINE: AMLR applies from 10 July 2027; AMLD6 to be transposed by Member States by 10 July 2027.
+"""
+}

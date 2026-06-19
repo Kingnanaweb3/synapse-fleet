@@ -91,7 +91,7 @@ class LawFeedAdapter(SimpleAdapter[list]):
         print(f"[LawFeed] Received: {content[:120]}...")
 
         regulation_key = None
-        for key in ["GDPR", "EU_AI_ACT", "DORA"]:
+        for key in ["GDPR", "EU_AI_ACT", "DORA", "MICA", "NIS2", "AML"]:
             if key.lower().replace("_", " ") in content.lower() or key.lower() in content.lower():
                 regulation_key = key
                 break
