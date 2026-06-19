@@ -13,3 +13,4 @@ run.log
 *.bak
 patch_*.py
 .DS_Store
+.vercel
