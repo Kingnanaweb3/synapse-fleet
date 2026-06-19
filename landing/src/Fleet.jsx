@@ -46,7 +46,7 @@ export default function Fleet() {
           <div className="mt-5 inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-xs font-medium"
                style={{ background: c.card, border: `1px solid ${c.border}`, color: c.muted }}>
             <Share2 size={14} color={c.orange} />
-            Coordinated through Band · Reasoning via OpenRouter + Claude
+            Coordinated through Band · Reasoning on Groq (Llama + GPT-OSS)
           </div>
         </Reveal>
 
