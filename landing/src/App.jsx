@@ -5,6 +5,7 @@ import HowItWorks from "./HowItWorks.jsx";
 import Outcomes from "./Outcomes.jsx";
 import WhoItsFor from "./WhoItsFor.jsx";
 import Fleet from "./Fleet.jsx";
+import SDK from "./SDK.jsx";
 import Footer from "./Footer.jsx";
 
 export default function App() {
@@ -17,6 +18,7 @@ export default function App() {
       <Outcomes />
       <WhoItsFor />
       <Fleet />
+      <SDK />
       <Footer />
     </>
   );

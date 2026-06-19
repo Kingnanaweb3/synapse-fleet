@@ -19,6 +19,7 @@ const c = {
 const navLinks = [
   { label: "How it works", href: "#how-it-works" },
   { label: "The Fleet", href: "#fleet" },
+  { label: "SDK", href: "#sdk" },
 ];
 
 const stack = [
@@ -84,7 +85,7 @@ export default function Hero() {
                 <a key={l.href} href={l.href} className="nav-link font-medium">{l.label}</a>
               ))}
             </nav>
-            <a href="#fleet" className="nav-cta hidden items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold md:flex"
+            <a href="#sdk" className="nav-cta hidden items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold md:flex"
                style={{ background: c.orange, color: "#fff" }}>
               <Sparkles size={15} /> Run a Regulation
             </a>
@@ -104,7 +105,7 @@ export default function Hero() {
                   {l.label}
                 </a>
               ))}
-              <a href="#fleet" onClick={() => setOpen(false)}
+              <a href="#sdk" onClick={() => setOpen(false)}
                  className="mt-1 flex items-center justify-center gap-2 rounded-lg px-3 py-2.5 text-sm font-semibold"
                  style={{ background: c.orange, color: "#fff" }}>
                 <Sparkles size={15} /> Run a Regulation
@@ -143,7 +144,7 @@ export default function Hero() {
             <div className="text-center lg:col-start-1 lg:row-start-2 lg:text-left">
               {/* buttons */}
               <div className="flex flex-col gap-3 sm:flex-row sm:justify-center lg:justify-start">
-                <a href="#fleet" className="btn-prim flex items-center justify-center gap-2 rounded-xl px-6 py-3.5 text-sm font-semibold"
+                <a href="#sdk" className="btn-prim flex items-center justify-center gap-2 rounded-xl px-6 py-3.5 text-sm font-semibold"
                    style={{ background: c.orange, color: "#fff" }}>
                   <Sparkles size={16} /> Run a Regulation
                 </a>
