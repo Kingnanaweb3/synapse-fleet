@@ -5,6 +5,7 @@ import json
 import subprocess
 from flask import Flask, jsonify, request, send_from_directory
 from dotenv import load_dotenv
+import requests
 
 load_dotenv(os.path.join(os.path.dirname(os.path.dirname(__file__)), ".env"))
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
@@ -23,15 +24,12 @@ EVENTS_FILE = os.path.join(os.path.dirname(os.path.dirname(__file__)), "ui_event
 app = Flask(__name__, static_folder=os.path.join(os.path.dirname(__file__), "dist"))
 
 def band_post(api_key, body):
-    cmd = [
-        "curl", "-s", "-X", "POST",
+    r = requests.post(
         f"https://app.band.ai/api/v1/agent/chats/{ROOM_ID}/messages",
-        "-H", f"X-API-Key: {api_key}",
-        "-H", "Content-Type: application/json",
-        "-d", json.dumps(body)
-    ]
-    result = subprocess.run(cmd, capture_output=True, text=True, timeout=15)
-    return result.stdout
+        headers={"X-API-Key": api_key, "Content-Type": "application/json"},
+        json=body, timeout=15,
+    )
+    return r.text
 
 @app.route("/api/messages")
 def get_messages():
@@ -97,4 +95,4 @@ def serve(path):
 if __name__ == "__main__":
     print(f"Synapse Fleet UI — http://localhost:8888")
     print(f"Room: {ROOM_ID}")
-    app.run(debug=False, port=8888)
+    app.run(debug=False, host="0.0.0.0", port=int(os.environ.get("PORT", 8888)))

@@ -1,6 +1,7 @@
+import os
 import requests as req_lib
 
-UI_SERVER = "http://localhost:8888/api/event"
+UI_SERVER = os.environ.get("UI_EVENT_URL", "http://localhost:8888/api/event")
 
 def report_event(agent: str, event_type: str, summary: str, content: str = ""):
     try:
