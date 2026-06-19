@@ -24,6 +24,16 @@ function formatEur(n) {
   return `€${n.toLocaleString()}`;
 }
 
+function extractPretty(content) {
+  if (!content) return "";
+  const start = content.indexOf("{");
+  const end = content.lastIndexOf("}");
+  if (start !== -1 && end > start) {
+    try { return JSON.stringify(JSON.parse(content.slice(start, end + 1)), null, 2); } catch (e) {}
+  }
+  return content.trim();
+}
+
 function useCountUp(target, duration = 1500) {
   const [value, setValue] = useState(0);
   const prev = useRef(0);
@@ -57,8 +67,10 @@ function AgentAvatar({ agentKey }) {
 }
 
 function EventCard({ event, isLast }) {
+  const [open, setOpen] = useState(false);
   const agent = AGENTS[event.agent] || {};
   const eventColor = EVENT_COLORS[event.event_type] || "#666";
+  const pretty = open ? extractPretty(event.raw) : "";
   return (
     <div style={{ display: "flex", gap: 12, position: "relative" }}>
       {!isLast && (
@@ -68,10 +80,14 @@ function EventCard({ event, isLast }) {
         }} />
       )}
       <AgentAvatar agentKey={event.agent} />
-      <div style={{
-        flex: 1, background: "#111118", border: "1px solid #222",
-        borderRadius: 10, padding: "12px 14px", marginBottom: 16,
-      }}>
+      <div
+        onClick={() => setOpen(o => !o)}
+        style={{
+          flex: 1, background: "#111118", border: `1px solid ${open ? "#333" : "#222"}`,
+          borderRadius: 10, padding: "12px 14px", marginBottom: 16,
+          cursor: "pointer", transition: "border-color 0.15s",
+        }}
+      >
         <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
           <span style={{ color: agent.color || "#fff", fontWeight: 600, fontSize: 14 }}>{agent.label}</span>
           <span style={{ color: "#555", fontSize: 11, fontFamily: "monospace" }}>{event.time}</span>
@@ -81,7 +97,18 @@ function EventCard({ event, isLast }) {
           color: eventColor, background: eventColor + "18",
           borderRadius: 4, padding: "2px 8px", marginBottom: 6,
         }}>{event.event_type}</div>
-        <div style={{ color: "#888", fontSize: 13, lineHeight: 1.4 }}>{event.summary}</div>
+        <div style={{ color: "#888", fontSize: 13, lineHeight: 1.4, display: "flex", justifyContent: "space-between", alignItems: "flex-end", gap: 8 }}>
+          <span>{event.summary}</span>
+          <span style={{ color: "#555", fontSize: 11, flexShrink: 0, whiteSpace: "nowrap" }}>{open ? "▾ hide" : "▸ details"}</span>
+        </div>
+        {open && (
+          <pre style={{
+            marginTop: 10, background: "#0b0b11", border: "1px solid #1c1c2a",
+            borderRadius: 8, padding: "10px 12px", fontSize: 11, lineHeight: 1.5,
+            color: "#99aab5", fontFamily: "monospace", maxHeight: 260, overflow: "auto",
+            whiteSpace: "pre-wrap", wordBreak: "break-word",
+          }}>{pretty || "No additional detail."}</pre>
+        )}
       </div>
     </div>
   );
@@ -103,6 +130,7 @@ export default function App() {
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState("idle");
   const [regulation, setRegulation] = useState("GDPR");
+  const [cooldown, setCooldown] = useState(false);
 
   const animatedPenalty = useCountUp(dashboard?.max_penalty, 1800);
 
@@ -113,12 +141,12 @@ export default function App() {
     if (content.includes("regulation_ingested")) {
       const name = content.match(/"regulation_name"\s*:\s*"([^"]+)"/)?.[1];
       const penalty = content.match(/"max_penalty_eur"\s*:\s*(\d+)/)?.[1];
-      return { agent: "lawfeed", event_type: "regulation_ingested", time, summary: `${name || "Regulation"} ingested — ${penalty ? formatEur(+penalty) : ""} max penalty` };
+      return { agent: "lawfeed", event_type: "regulation_ingested", time, raw: content, summary: `${name || "Regulation"} ingested — ${penalty ? formatEur(+penalty) : ""} max penalty` };
     }
     if (content.includes("exposure_mapped")) {
       const compliant = content.match(/"compliant"\s*:\s*(\d+)/)?.[1];
       const total = content.match(/"total_obligations"\s*:\s*(\d+)/)?.[1];
-      return { agent: "exposure_analyzer", event_type: "exposure_mapped", time, summary: `${compliant || "?"} / ${total || "?"} obligations met` };
+      return { agent: "exposure_analyzer", event_type: "exposure_mapped", time, raw: content, summary: `${compliant || "?"} / ${total || "?"} obligations met` };
     }
     if (content.includes("risk_quantified")) {
       const maxM = content.match(/"maximum"[\s\S]*?"amount_eur"\s*:\s*(\d+)/)?.[1];
@@ -128,41 +156,47 @@ export default function App() {
       const riskMatch = content.match(/"key_risk_drivers"\s*:\s*\[([^\]]+)\]/)?.[1];
       const risks = riskMatch?.match(/"([^"]+)"/g)?.map(s => s.replace(/"/g, "")) || [];
       if (maxM) setDashboard(prev => ({ ...prev, max_penalty: +maxM, exp_penalty: expM ? +expM : null, remediation: remM ? +remM : null, ratio, risks }));
-      return { agent: "risk_assessor", event_type: "risk_quantified", time, summary: `${maxM ? formatEur(+maxM) : "—"} max exposure` };
+      return { agent: "risk_assessor", event_type: "risk_quantified", time, raw: content, summary: `${maxM ? formatEur(+maxM) : "—"} max exposure` };
     }
     if (content.includes("remediation_plan_ready")) {
       const actions = content.match(/"total_actions"\s*:\s*(\d+)/)?.[1];
       const days = content.match(/"estimated_completion_days"\s*:\s*(\d+)/)?.[1];
       if (actions) setDashboard(prev => ({ ...prev, total_actions: +actions, completion_days: days ? +days : null }));
-      return { agent: "remediation_architect", event_type: "remediation_plan_ready", time, summary: `${actions || "?"} actions · ${days || "?"}-day roadmap` };
+      return { agent: "remediation_architect", event_type: "remediation_plan_ready", time, raw: content, summary: `${actions || "?"} actions · ${days || "?"}-day roadmap` };
     }
     if (content.includes("board_memo_pending_approval")) {
       const subject = content.match(/"subject"\s*:\s*"([^"]+)"/)?.[1];
       setStatus("awaiting_approval");
       setDashboard(prev => ({ ...prev, memo_subject: subject }));
-      return { agent: "board_notifier", event_type: "board_memo_pending_approval", time, summary: "Board memo ready · requires_human_signoff: true" };
+      return { agent: "board_notifier", event_type: "board_memo_pending_approval", time, raw: content, summary: "Board memo ready · requires_human_signoff: true" };
     }
     return null;
   };
 
   useEffect(() => {
-    const poll = setInterval(async () => {
+    let active = true;
+    const fetchMessages = async () => {
       try {
         const res = await fetch("/api/messages");
         const data = await res.json();
-        if (!data.messages) return;
+        if (!active || !data.messages) return;
         const parsed = data.messages.map(parseMessage).filter(Boolean);
         if (parsed.length > 0) {
           setEvents(parsed);
-          if (status === "idle") setStatus("running");
+          setStatus(prev => prev === "idle" ? "running" : prev);
         }
       } catch (e) {}
-    }, 4000);
-    return () => clearInterval(poll);
-  }, [status]);
+    };
+    fetchMessages();
+    const poll = setInterval(fetchMessages, 4000);
+    return () => { active = false; clearInterval(poll); };
+  }, []);
 
   const handleStart = async () => {
-    setEvents([]); setDashboard(null); setApproved(false); setStatus("running");
+    if (cooldown) return;
+    setCooldown(true);
+    setTimeout(() => setCooldown(false), 8000);
+    setApproved(false); setStatus("running");
     await fetch("/api/start", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ regulation }) });
   };
 
@@ -218,15 +252,18 @@ export default function App() {
         <div style={s.body}>
           <div style={s.left}>
             <div style={s.label}>⬤ Band Room — Live Agent Stream</div>
-            <div style={{ display: "flex", gap: 10, marginBottom: 20 }}>
+            <div style={{ display: "flex", gap: 10, marginBottom: 12 }}>
               <select style={{ flex: 1, background: "#111118", border: "1px solid #222", color: "#fff", borderRadius: 8, padding: "10px 14px", fontSize: 14, fontFamily: "'DM Sans', sans-serif" }} value={regulation} onChange={e => setRegulation(e.target.value)}>
                 <option value="GDPR">GDPR</option>
                 <option value="EU_AI_ACT">EU AI Act</option>
                 <option value="DORA">DORA</option>
               </select>
-              <button onClick={handleStart} style={{ padding: "10px 20px", background: "#FF4500", color: "#fff", border: "none", borderRadius: 8, fontSize: 14, fontWeight: 600, cursor: "pointer" }}>
-                Run Analysis
+              <button onClick={handleStart} disabled={cooldown} style={{ padding: "10px 20px", background: cooldown ? "#7a2a10" : "#FF4500", color: "#fff", border: "none", borderRadius: 8, fontSize: 14, fontWeight: 600, cursor: cooldown ? "default" : "pointer", opacity: cooldown ? 0.7 : 1 }}>
+                {cooldown ? "Running…" : "Run Analysis"}
               </button>
+            </div>
+            <div style={{ fontSize: 12, color: "#666", marginBottom: 18 }}>
+              Target: <span style={{ color: "#aaa" }}>Acme Financial Services Ltd</span> · <span style={{ color: "#aaa" }}>{regulation}</span>
             </div>
             {events.length === 0 && <div style={{ color: "#333", fontSize: 13, textAlign: "center", paddingTop: 40 }}>Select a regulation and click Run Analysis.</div>}
             {events.map((ev, i) => <div key={i} className="ev"><EventCard event={ev} isLast={i === events.length - 1} /></div>)}
@@ -234,6 +271,7 @@ export default function App() {
 
           <div style={s.right}>
             <div style={s.label}>Executive Command Dashboard</div>
+            <div style={{ fontSize: 12, color: "#666", marginTop: -8, marginBottom: 18 }}>Acme Financial Services Ltd · {regulation}</div>
             {!dashboard && <div style={{ color: "#333", fontSize: 13, textAlign: "center", paddingTop: 80 }}>Run a regulation analysis to see the executive summary here.</div>}
             {dashboard && <>
               <div style={s.card}>
